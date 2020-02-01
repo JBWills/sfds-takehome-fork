@@ -27,6 +27,7 @@ function createHeaderData(key, phrase, isNumeric=false, rowToValue=(row) => row[
     key,
     phrase,
     rowToValue,
+    isNumeric,
     comparator: isNumeric ? compareByNumberColumn : compareByStringColumn,
   };
 }

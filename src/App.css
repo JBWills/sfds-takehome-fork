@@ -10,14 +10,28 @@
 
 .Cell {
   border: 1px solid gray;
-  flex-grow: 1;
-  flex-basis: 0;
-  text-align: center;
+  flex: 1 0 0;
+  text-align: left;
+  padding: 5px;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.Cell-Numeric {
+  flex: 0.5 0 0;
+  text-align: right;
+}
+
+.Cell-Icon {
+  width: 10px;
+  height: 10px;
 }
 
 .Header {
   background-color: lightblue;
   cursor: pointer;
+  text-align: center;
+  user-select: none;
 }
 
 .TableRow:nth-child(odd) {

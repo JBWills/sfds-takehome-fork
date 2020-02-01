@@ -32,11 +32,17 @@ export class App extends Component {
   }
 
   render() {
-    const { housingRows } = this.props;
+    const { housingRows, sortedColumn, sortedAscending } = this.props;
 
     return (
       <div>
-        <DataTable columns={VISIBLE_COLUMNS} rows={housingRows} onClickColumn={this.onClickColumn} />
+        <DataTable
+          columns={VISIBLE_COLUMNS}
+          onClickColumn={this.onClickColumn}
+          rows={housingRows}
+          sortedAscending={sortedAscending}
+          sortedColumn={sortedColumn}
+        />
       </div>
     );
   }
