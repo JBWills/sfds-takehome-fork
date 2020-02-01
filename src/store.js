@@ -3,10 +3,16 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './reducers/AppReducer';
 
-export default function configureStore(initialState={}) {
+const defaultState = {
+  housingRows: [],
+  sortedColumn: null,
+  sortedAscending: true,
+};
+
+export default function configureStore() {
   return createStore(
     rootReducer,
-    initialState,
+    defaultState,
     applyMiddleware(thunk)
   );
 }

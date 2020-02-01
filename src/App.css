@@ -1,0 +1,25 @@
+.DataTable {
+  display: flex;
+  flex-direction: column;
+}
+
+.TableRow {
+  display: flex;
+  width: 100%;
+}
+
+.Cell {
+  border: 1px solid gray;
+  flex-grow: 1;
+  flex-basis: 0;
+  text-align: center;
+}
+
+.Header {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.TableRow:nth-child(odd) {
+  background-color: gainsboro;
+}
