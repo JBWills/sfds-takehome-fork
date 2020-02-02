@@ -1,69 +1,65 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Running this website
 
-In the project directory, you can run:
+Clone the repo, then run this from the repo directory.
+```
+npm install
+npm start
+```
 
-### `npm start`
+This will install all of the required dependencies and open the app in a new browser tab at http://localhost:3000/.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Running the JS tests
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+run `npm test` from the repo directory.
 
-### `npm test`
+## Screenshots
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Screenshot: the main page
 
-### `npm run build`
+![Screen Shot 2020-02-02 at 1 59 55 PM](https://user-images.githubusercontent.com/3174893/73616137-7231e300-45c4-11ea-9ff6-c3d5cbad31c4.png)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Screenshot: filtered by string and numeric values
+![Screen Shot 2020-02-02 at 1 59 55 PM](https://user-images.githubusercontent.com/3174893/73616151-aa392600-45c4-11ea-8290-7d2a8a2b5e5d.png)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## TODOs
+These are the things I would add to this project if I had more time to work on it:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### More opinionated linting rules
+I included the bare minimum for this project but if this was a project that would be shared across teams I would want more opinionated (and automated) linting rules to make code-style something engineers don't have to think about while writing or reviewing code.
 
-### `npm run eject`
+### Better memoization with filters
+Currently the sorting and filtering operations are memoized with the [reselect library](https://redux.js.org/recipes/computing-derived-data/). This library adds simple memoization with a cache size of 1 (it only avoids recomputing if the data is the same as last time the function was called).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This works well when other, non-filter state changes, but if there are 5 filters applied and only one changes, we have to recompute all 5 filters. If we split each filter into its own selector we would be able to only re-apply a subset of the filters.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Storing pre-computed columns
+Some columns in the table are computed (ex: the PROJECT_ADDRESS column). These values are re-computed each time we render the table. Currently none of these are expensive computations, but any computed column that is computed with only row data could easily be computed once on INIT_HOUSING_DATA and re-used from then on.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Filter behaviors
+- The numeric filters should have a two-sided slider that adjusts min and max values together. Even better would be a histogram above the slider that shows the number of rows that apply at each step.
+- The text on the numeric filters updates with application state, which is debounced at 100ms. Unfortunately this creates a bit of a lag between the number shown and the current value of the slider. This could be qiuickly fixed with local state on the NumericFilter component.
+- String filters should be adjustable for "contains/startsWith/fuzzy matching". Currently it only allows for searching by contains.
+- String filters shouldn't match on case (or there should be an option to toggle case matching).
+- Additional filter types should be added (ex: 1br units available boolean filter)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Data selection improvements
+I'm not really sure what people are most interested in when they look at this data, I think if I learned more I would definitely change the columns that are shown to the user. This is partly why I made the app so modular, since it should be easy to update based on user feedback.
 
-## Learn More
+### Product description improvements
+I definitely didn't do a strong job explaining what the data in the table relates to, or what each of the columns means.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Additional testing
+There is lots of code coverage missing in the following places:
+- selectors
+- store
+- action creators
+- reducer
+- connected components (App.jsx)
+- component functionality (such as clicking on forms)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Convert to TypeScript
+I haven't worked with TypeScript much before, so for the sake of time, I decided not to use it in this repo. Any repo I built for the long-term would definitely be in TypeScript though since it makes the code easier to read. Especially in this repo with lots of objects (rows and columns) being passed around.
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
+At the very least I could add proptype validation for all components.
