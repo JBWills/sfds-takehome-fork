@@ -21,7 +21,7 @@ run `npm test` from the repo directory.
 ![Screen Shot 2020-02-02 at 1 59 55 PM](https://user-images.githubusercontent.com/3174893/73616137-7231e300-45c4-11ea-9ff6-c3d5cbad31c4.png)
 
 ### Screenshot: filtered by string and numeric values
-![Screen Shot 2020-02-02 at 1 59 55 PM](https://user-images.githubusercontent.com/3174893/73616151-aa392600-45c4-11ea-8290-7d2a8a2b5e5d.png)
+![Screen Shot 2020-02-02 at 2 02 18 PM](https://user-images.githubusercontent.com/3174893/73616435-3436be00-45c8-11ea-8dd1-232203bbc6dd.png)
 
 ## TODOs
 These are the things I would add to this project if I had more time to work on it:
