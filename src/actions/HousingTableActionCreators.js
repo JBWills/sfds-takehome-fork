@@ -5,24 +5,29 @@ export const initHousingData = (data) => dispatch => {
   });
 };
 
+export const handleFilterChanged = (newFilterState) => (dispatch, getState) => {
+  const { filters } = getState();
+
+  const newFilters = {...filters, [newFilterState.column.key]: newFilterState };
+
+  dispatch({
+    type: 'FILTERS_CHANGED',
+    payload: {
+      filters: newFilters,
+    },
+  });
+};
+
 export const handleColumnClicked = column => (dispatch, getState) => {
   const { sortedColumn, sortedAscending } = getState();
 
-  if (sortedColumn === null || sortedColumn !== column) {
-    dispatch(sortBy(column, true));
-  }
+  const shouldSortAscending = sortedColumn === null || sortedColumn !== column || !sortedAscending;
 
-  dispatch(sortBy(column, !sortedAscending));
-};
-
-export const sortBy = (column, ascending=true) => (dispatch, getState) => {
-  const { housingRows } = getState();
   dispatch({
-    type: 'HOUSING_DATA_SORTED',
+    type: 'SORTING_METHOD_CHANGED',
     payload: {
-      housingRows: [...housingRows].sort((a, b) => column.comparator(a, b, column, ascending)),
       sortedColumn: column,
-      sortedAscending: ascending,
+      sortedAscending: shouldSortAscending,
     },
   });
 };
