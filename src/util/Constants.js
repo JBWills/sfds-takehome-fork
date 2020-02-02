@@ -72,7 +72,23 @@ export const COLUMN_DATA = {
   LATITUDE: createColumnData('latitude', 'Latitude'),
   LONGITUDE: createColumnData('longitude', 'Longitude'),
   LOCATION: createColumnData('location', 'Location'),
-  STREET_ADDRESS: createColumnData('street_address', 'Street Address', false, ({ street_number, street_name, street_type }) => `${street_number} ${street_name} ${street_type}`),
+  STREET_ADDRESS:
+    createColumnData(
+      'street_address',
+      'Street Address',
+      false,
+      ({ street_number, street_name, street_type }) => `${street_number || ''} ${street_name || ''} ${street_type || ''}`),
+  AFFORDABLE_BEDROOM_SUMMARY:
+    createColumnData(
+      'affordable_bedroom_summary',
+      'Number of Units with 0/1/2/3+ Bedrooms',
+      false,
+      (row) => [
+        row.studio_units,
+        row._1_bedroom_units,
+        row._2_bedroom_units,
+        parseInt(row._3_bedroom_units) + parseInt(row._4_bedroom_units) + parseInt(row._5_bedroom_or_larger_units),
+      ].join('/')),
 };
 
 // These are the columns that should be visible in the data
@@ -84,6 +100,7 @@ export const VISIBLE_COLUMNS = [
   COLUMN_DATA.TOTAL_UNITS,
   COLUMN_DATA.AFFORDABLE_BEDS,
   COLUMN_DATA.TOTAL_BEDS,
+  COLUMN_DATA.AFFORDABLE_BEDROOM_SUMMARY,
 ];
 
 // These are the columns to include filters on.
@@ -92,6 +109,7 @@ export const FILTERABLE_COLUMNS = [
   COLUMN_DATA.NEIGHBORHOOD,
   COLUMN_DATA.AFFORDABLE_UNITS,
   COLUMN_DATA.TOTAL_UNITS,
-  COLUMN_DATA.AFFORDABLE_BEDS,
-  COLUMN_DATA.TOTAL_BEDS,
+  COLUMN_DATA.STUDIO_UNITS,
+  COLUMN_DATA.ONE_BEDROOM_UNITS,
+  COLUMN_DATA.TWO_BEDROOM_UNITS,
 ];
