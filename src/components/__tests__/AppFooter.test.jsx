@@ -2,15 +2,15 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import AppFooter from '../AppFooter';
- 
+
 const defaultProps = {
   siteUpdatedAt: 'September 1',
   dataLastUpdatedAt: 'September 2',
   metaDataLastUpdatedAt: 'September 3',
 };
 
-const getProps = (overrides={}) => {
-  return {...defaultProps, ...overrides};
+const getProps = (overrides = {}) => {
+  return { ...defaultProps, ...overrides };
 };
 
 test('renders the author citation', () => {

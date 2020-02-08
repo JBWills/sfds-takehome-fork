@@ -7,23 +7,21 @@ import classNames from 'classnames';
 const DataCell = ({
   column,
   content,
-  imgAltText=null,
-  imgSource=null,
+  imgAltText = null,
+  imgSource = null,
   isHeader,
   onClick,
 }) => (
   <span
-    className={classNames('Cell', { HeaderCell: isHeader, 'Cell-Numeric': column.isNumeric })}
+    className={classNames('Cell', {
+      HeaderCell: isHeader,
+      'Cell-Numeric': column.isNumeric,
+    })}
     onClick={onClick}
   >
-    {content}
-    {' '}
+    {content}{' '}
     {imgSource && imgAltText && (
-      <img
-        className="Cell-Icon"
-        alt={imgAltText}
-        src={imgSource}
-      />
+      <img className="Cell-Icon" alt={imgAltText} src={imgSource} />
     )}
   </span>
 );
@@ -34,8 +32,12 @@ const HeaderRow = ({
   sortedAscending,
   sortedColumn,
 }) => {
-  const sortedIndicatorImageSource = sortedAscending ? arrowUpIcon : arrowDownIcon;
-  const ascendingIndicatorAltText = sortedAscending ? 'Sorted ascending' : 'Sorted descending';
+  const sortedIndicatorImageSource = sortedAscending
+    ? arrowUpIcon
+    : arrowDownIcon;
+  const ascendingIndicatorAltText = sortedAscending
+    ? 'Sorted ascending'
+    : 'Sorted descending';
   return (
     <div className="TableRow">
       {columns.map((column, i) => (
@@ -43,7 +45,9 @@ const HeaderRow = ({
           column={column}
           content={column.phrase}
           isHeader
-          imgSource={sortedColumn === column ? sortedIndicatorImageSource : null}
+          imgSource={
+            sortedColumn === column ? sortedIndicatorImageSource : null
+          }
           imgAltText={ascendingIndicatorAltText}
           key={i}
           onClick={() => onClickColumn(column)}
@@ -52,15 +56,11 @@ const HeaderRow = ({
     </div>
   );
 };
- 
+
 const DataRow = ({ row, columns }) => (
   <div className="TableRow">
     {columns.map((column, i) => (
-      <DataCell
-        key={i}
-        column={column}
-        content={column.rowToValue(row)}
-      />
+      <DataCell key={i} column={column} content={column.rowToValue(row)} />
     ))}
   </div>
 );
@@ -74,7 +74,7 @@ const DataTable = ({
   onClickColumn,
   rows,
   sortedAscending,
-  sortedColumn
+  sortedColumn,
 }) => (
   <div>
     <HeaderRow
@@ -84,11 +84,7 @@ const DataTable = ({
       sortedAscending={sortedAscending}
     />
     {rows.map((row, i) => (
-      <DataRow
-        key={i}
-        row={row}
-        columns={columns}
-      />
+      <DataRow key={i} row={row} columns={columns} />
     ))}
   </div>
 );

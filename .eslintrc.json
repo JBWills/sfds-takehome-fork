@@ -1,60 +1,35 @@
 {
 	"env": {
-			"browser": true,
-			"es6": true
+		"browser": true,
+		"es6": true,
+		"jest": true
 	},
 	"extends": [
-			"eslint:recommended",
-			"plugin:react/recommended"
+		"eslint:recommended",
+    "plugin:react/recommended"
 	],
+	"parser": "babel-eslint",
 	"globals": {
-			"Atomics": "readonly",
-			"SharedArrayBuffer": "readonly"
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
 	},
 	"parserOptions": {
-			"ecmaFeatures": {
-					"jsx": true
-			},
-			"ecmaVersion": 2018,
-			"sourceType": "module"
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 2018,
+		"sourceType": "module"
 	},
 	"plugins": [
-			"react"
+		"prettier",
+		"react"
 	],
 	"rules": {
-			"jsx-quotes": ["error", "prefer-double"],
-			"indent": [
-					"error",
-					2
-			],
-			"linebreak-style": [
-					"error",
-					"unix"
-			],
-			"quotes": [
-					"error",
-					"single"
-			],
-			"react/jsx-indent": [2, 2],
-			"react/jsx-closing-bracket-location": ["error", "line-aligned"],
-			"react/jsx-closing-tag-location": "error",
-			"react/jsx-indent-props": ["error", 2],
+		"prettier/prettier": "error",
+		"react/jsx-indent-props": ["error", 2],
 
-			"react/prefer-es6-class": ["error", "always"],
-			"react/jsx-wrap-multilines": ["error", {
-					"declaration": "parens-new-line",
-					"assignment": "parens-new-line",
-					"return": "parens-new-line",
-					"arrow": "parens-new-line",
-					"condition": "parens-new-line",
-					"logical": "parens-new-line",
-					"prop": "parens-new-line"
-				}],
-			"react/prop-types": 0,
-			"react/jsx-filename-extension": ["error", { "extensions": [".jsx"] }],
-			"semi": [
-					"error",
-					"always"
-			]
+		"react/prefer-es6-class": ["error", "always"],
+		"react/prop-types": 0,
+		"react/jsx-filename-extension": ["error", { "extensions": [".jsx"] }]
 	}
 }

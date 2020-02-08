@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
-import { initHousingData, handleColumnClicked, handleFilterChanged } from './actions/HousingTableActionCreators';
+import {
+  initHousingData,
+  handleColumnClicked,
+  handleFilterChanged,
+} from './actions/HousingTableActionCreators';
 import data from './sfgovdata.json';
 import { getFilteredSortedRows } from './selectors';
 import MainPageContainer from './components/MainPageContainer';
@@ -12,11 +16,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  initHousingData: (data) => dispatch(initHousingData(data)),
-  handleColumnClicked: (data) => dispatch(handleColumnClicked(data)),
-  handleFilterChanged: (data) => dispatch(handleFilterChanged(data)),
+  initHousingData: data => dispatch(initHousingData(data)),
+  handleColumnClicked: data => dispatch(handleColumnClicked(data)),
+  handleFilterChanged: data => dispatch(handleFilterChanged(data)),
 });
-
 
 export class App extends Component {
   constructor(props) {

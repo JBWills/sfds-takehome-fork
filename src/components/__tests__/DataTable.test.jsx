@@ -4,15 +4,15 @@ import { render } from '@testing-library/react';
 import mockRows from '../../mocks/mockRows';
 import { COLUMN_DATA } from '../../util/Constants';
 import DataTable from '../DataTable';
- 
+
 const baseProps = {
   columns: [COLUMN_DATA.PROJECT_NAME],
   rows: mockRows,
   onClickColumn: () => {},
 };
 
-const getProps = (overrides={}) => {
-  return {...baseProps, ...overrides};
+const getProps = (overrides = {}) => {
+  return { ...baseProps, ...overrides };
 };
 
 test('renders the PROJECT_NAME header with default props', () => {
@@ -40,13 +40,9 @@ test('does not render either PROJECT_ADDRESS values with default props', () => {
 });
 
 test('renders both PROJECT_ADDRESS values when address column passed in', () => {
-  const propsWithAddressColumn = getProps(
-    {
-      columns: [
-        COLUMN_DATA.PROJECT_NAME,
-        COLUMN_DATA.PROJECT_ADDRESS
-      ]
-    });
+  const propsWithAddressColumn = getProps({
+    columns: [COLUMN_DATA.PROJECT_NAME, COLUMN_DATA.PROJECT_ADDRESS],
+  });
   const { getByText } = render(<DataTable {...propsWithAddressColumn} />);
   expect(getByText('Project address 1')).toBeInTheDocument();
   expect(getByText('Project address 2')).toBeInTheDocument();
@@ -59,21 +55,19 @@ test('does not render any sort icons with default props', () => {
 });
 
 test('renders an ascending icon when sortedAscending=true and column is set', () => {
-  const propsWithSortedColumn = getProps(
-    {
-      sortedAscending: true,
-      sortedColumn: COLUMN_DATA.PROJECT_NAME,
-    });
+  const propsWithSortedColumn = getProps({
+    sortedAscending: true,
+    sortedColumn: COLUMN_DATA.PROJECT_NAME,
+  });
   const { getByAltText } = render(<DataTable {...propsWithSortedColumn} />);
   expect(getByAltText('Sorted ascending')).toBeInTheDocument();
 });
 
 test('renders a descending icon when sortedAscending=true and column is set', () => {
-  const propsWithSortedColumn = getProps(
-    {
-      sortedAscending: false,
-      sortedColumn: COLUMN_DATA.PROJECT_NAME,
-    });
+  const propsWithSortedColumn = getProps({
+    sortedAscending: false,
+    sortedColumn: COLUMN_DATA.PROJECT_NAME,
+  });
   const { getByAltText } = render(<DataTable {...propsWithSortedColumn} />);
   expect(getByAltText('Sorted descending')).toBeInTheDocument();
 });

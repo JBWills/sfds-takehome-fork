@@ -1,12 +1,14 @@
 import React from 'react';
 
 const FooterItem = ({ text }) => (
-  <span className="AppFooterContent">
-    {text}
-  </span>
+  <span className="AppFooterContent">{text}</span>
 );
 
-const AppFooter = ({ siteUpdatedAt, dataLastUpdatedAt, metaDataLastUpdatedAt }) => (
+const AppFooter = ({
+  siteUpdatedAt,
+  dataLastUpdatedAt,
+  metaDataLastUpdatedAt,
+}) => (
   <div className="AppFooter">
     <FooterItem text={'Site by James Wills'} />
     <FooterItem text={'Publishing Dept: Mayor'} />
