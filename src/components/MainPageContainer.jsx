@@ -28,7 +28,11 @@ const MainPageContainer = ({
         </div>
       </div>
 
-      <FilterPanel filters={filters} onFilterChanged={onFilterChanged} />
+      <FilterPanel
+        key={filters}
+        filters={filters}
+        onFilterChanged={onFilterChanged}
+      />
 
       <div className="DataTableContainer">
         <DataTable

@@ -26,7 +26,7 @@ const NumericFilter = ({ filter, onFilterChanged }) => {
         <input
           name={`filterBy${filter.column.key}Enabled `}
           type="checkbox"
-          defaultChecked={filter.enabled}
+          checked={filter.enabled}
           onChange={() =>
             onFilterChanged({ ...filter, enabled: !filter.enabled })
           }
@@ -87,6 +87,13 @@ const Filter = ({ filter, onFilterChanged }) => {
   }
 };
 
+/**
+ * This is a fully uncontrolled component
+ * (see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key)
+ *
+ * It will only use the initial props passed to it, so if you need to refresh this component
+ * you need to use a key component that changes when you want the component to refresh completely.
+ */
 export class FilterPanel extends Component {
   constructor(props) {
     super(props);
@@ -98,17 +105,25 @@ export class FilterPanel extends Component {
   }
 
   debouncedFilter = debounce(filter => {
-    this.onFilterChanged(filter);
+    this.props.onFilterChanged(filter);
   }, 100);
 
+  onFilterChanged = filter => {
+    this.setState({
+      filters: { ...this.state.filters, [filter.column.key]: filter },
+    });
+    this.debouncedFilter(filter);
+  };
+
   render() {
-    const { filters } = this.props;
+    const { filters } = this.state;
+
     return (
       <div className="FilterPanelContainer">
         <form>
           {Object.values(filters).map(filter => (
             <div key={filter.column.key}>
-              <Filter filter={filter} onFilterChanged={this.debouncedFilter} />
+              <Filter filter={filter} onFilterChanged={this.onFilterChanged} />
             </div>
           ))}
         </form>
