@@ -69,3 +69,42 @@ export const createNumericFilter = (
     max,
   };
 };
+
+const createHistogramForFilter = (buckets, filter, rows) => {
+  const histogram = new Array(buckets).fill(0);
+  const values = rows.map(row => filter.column.rowToValue(row));
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const step = (max - min) / buckets;
+
+  values.forEach(value => {
+    if (value <= min) {
+      histogram[0] += 1;
+    } else if (value >= max) {
+      histogram[buckets - 1] += 1;
+    } else {
+      histogram[Math.floor((value - min) / step)] += 1;
+    }
+  });
+
+  return {
+    histogram,
+    min,
+    max,
+  };
+};
+
+export const createHistogramsForFilters = (buckets, filters, rows) => {
+  const histograms = {};
+  Object.values(filters).forEach(filter => {
+    if (filter.column.isNumeric) {
+      histograms[filter.column.key] = createHistogramForFilter(
+        buckets,
+        filter,
+        rows
+      );
+    }
+  });
+
+  return histograms;
+};

@@ -8,7 +8,12 @@ import { formatTimestamp } from './util/DateFormat';
 
 const createDefaultFilters = () => {
   const filters = {};
-  FILTERABLE_COLUMNS.forEach(column => filters[column.key] = column.isNumeric ? createNumericFilter(column) : createStringFilter(column));
+  FILTERABLE_COLUMNS.forEach(
+    column =>
+      (filters[column.key] = column.isNumeric
+        ? createNumericFilter(column)
+        : createStringFilter(column))
+  );
 
   return filters;
 };
@@ -19,6 +24,8 @@ const defaultState = {
   sortedAscending: true,
   filters: createDefaultFilters(),
 
+  histograms: {},
+
   // These would be passed via bootstrapped data from backend in a real app
   siteUpdatedAt: formatTimestamp(1580601600),
   dataLastUpdatedAt: formatTimestamp(1558396800),
@@ -26,9 +33,5 @@ const defaultState = {
 };
 
 export default function configureStore() {
-  return createStore(
-    rootReducer,
-    defaultState,
-    applyMiddleware(thunk)
-  );
+  return createStore(rootReducer, defaultState, applyMiddleware(thunk));
 }

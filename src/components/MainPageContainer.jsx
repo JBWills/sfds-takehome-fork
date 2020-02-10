@@ -7,6 +7,7 @@ import { VISIBLE_COLUMNS } from '../util/Constants';
 
 const MainPageContainer = ({
   filters,
+  histograms,
   housingRows,
   sortedAscending,
   sortedColumn,
@@ -31,6 +32,7 @@ const MainPageContainer = ({
       <FilterPanel
         key={filters}
         filters={filters}
+        histograms={histograms}
         onFilterChanged={onFilterChanged}
       />
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FILTER_TYPE } from '../util/Filters';
 import debounce from 'lodash.debounce';
+import FilterHistogram from './histogram/FilterHistogram';
 
 const StyledInput = ({
   labelText,
@@ -19,7 +20,28 @@ const StyledInput = ({
   );
 };
 
-const NumericFilter = ({ filter, onFilterChanged }) => {
+const NumericFilter = ({ filter, histogramData, onFilterChanged }) => {
+  if (!histogramData) {
+    return null;
+  }
+
+  const updateFilter = (min, max, enabled) => {
+    onFilterChanged({
+      ...filter,
+      enabled,
+      min,
+      max,
+    });
+  };
+
+  const updateEnabled = enabled =>
+    updateFilter(filter.min, filter.max, enabled);
+  const updateMin = min => updateFilter(min, filter.max, filter.enabled);
+  const updateMax = max => updateFilter(filter.min, max, filter.enabled);
+
+  const currentMin = Math.max(histogramData.min, filter.min);
+  const currentMax = Math.min(histogramData.max, filter.max);
+
   return (
     <div>
       <StyledInput labelText={`Filter by minimum ${filter.column.phrase}`}>
@@ -27,29 +49,24 @@ const NumericFilter = ({ filter, onFilterChanged }) => {
           name={`filterBy${filter.column.key}Enabled `}
           type="checkbox"
           checked={filter.enabled}
-          onChange={() =>
-            onFilterChanged({ ...filter, enabled: !filter.enabled })
-          }
+          onChange={() => updateEnabled(!filter.enabled)}
         />
       </StyledInput>
       {filter.enabled && (
-        <StyledInput labelText={filter.min} showLabelTextAfterChildren>
-          <input
-            name={`filterBy${filter.column.key}Range`}
-            type="range"
-            min="0"
-            max="500"
-            defaultValue={filter.min}
-            onChange={e =>
-              onFilterChanged({
-                ...filter,
-                enabled: filter.enabled,
-                min: e.target.value,
-              })
-            }
-            step="1"
+        <>
+          <FilterHistogram
+            min={histogramData.min}
+            max={histogramData.max}
+            filterMin={currentMin}
+            filterMax={currentMax}
+            histogram={histogramData.histogram}
+            onMinChanged={updateMin}
+            onMaxChanged={updateMax}
           />
-        </StyledInput>
+          <div style={{ paddingTop: 10, paddingBottom: 10 }}>
+            {`Min: ${currentMin}  Max: ${currentMax}`}
+          </div>
+        </>
       )}
     </div>
   );
@@ -61,7 +78,7 @@ const StringFilter = ({ filter, onFilterChanged }) => {
       <input
         name={`filterBy${filter.column.key}Enabled `}
         type="text"
-        defaultValue={filter.searchVal}
+        value={filter.searchVal}
         onChange={e =>
           onFilterChanged({
             ...filter,
@@ -74,11 +91,15 @@ const StringFilter = ({ filter, onFilterChanged }) => {
   );
 };
 
-const Filter = ({ filter, onFilterChanged }) => {
+const Filter = ({ filter, histogramData, onFilterChanged }) => {
   switch (filter.filterType) {
     case FILTER_TYPE.NUMERIC:
       return (
-        <NumericFilter filter={filter} onFilterChanged={onFilterChanged} />
+        <NumericFilter
+          filter={filter}
+          histogramData={histogramData}
+          onFilterChanged={onFilterChanged}
+        />
       );
     case FILTER_TYPE.STRING:
       return <StringFilter filter={filter} onFilterChanged={onFilterChanged} />;
@@ -117,13 +138,18 @@ export class FilterPanel extends Component {
 
   render() {
     const { filters } = this.state;
+    const { histograms } = this.props;
 
     return (
       <div className="FilterPanelContainer">
         <form>
           {Object.values(filters).map(filter => (
             <div key={filter.column.key}>
-              <Filter filter={filter} onFilterChanged={this.onFilterChanged} />
+              <Filter
+                filter={filter}
+                histogramData={histograms[filter.column.key]}
+                onFilterChanged={this.onFilterChanged}
+              />
             </div>
           ))}
         </form>
@@ -134,6 +160,7 @@ export class FilterPanel extends Component {
 
 FilterPanel.propTypes = {
   filters: PropTypes.object.isRequired,
+  histograms: PropTypes.object.isRequired,
   onFilterChanged: PropTypes.func.isRequired,
 };
 

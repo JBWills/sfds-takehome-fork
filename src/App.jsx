@@ -46,6 +46,7 @@ export class App extends Component {
       dataLastUpdatedAt,
       filters,
       housingRows,
+      histograms,
       metaDataLastUpdatedAt,
       siteUpdatedAt,
       sortedAscending,
@@ -57,6 +58,7 @@ export class App extends Component {
         dataLastUpdatedAt={dataLastUpdatedAt}
         filters={filters}
         housingRows={housingRows}
+        histograms={histograms}
         metaDataLastUpdatedAt={metaDataLastUpdatedAt}
         siteUpdatedAt={siteUpdatedAt}
         sortedAscending={sortedAscending}

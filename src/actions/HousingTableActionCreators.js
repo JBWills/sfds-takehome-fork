@@ -1,7 +1,15 @@
-export const initHousingData = data => dispatch => {
+import { createHistogramsForFilters } from '../util/Filters';
+
+export const initHousingData = data => (dispatch, getState) => {
+  const { filters } = getState();
+
+  const histograms = createHistogramsForFilters(50, filters, data);
   dispatch({
     type: 'INIT_HOUSING_DATA',
-    payload: data,
+    payload: {
+      housingRows: data,
+      histograms,
+    },
   });
 };
 
