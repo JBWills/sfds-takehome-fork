@@ -1,30 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import arrowDownIcon from '../resources/arrow-down.png';
-import arrowUpIcon from '../resources/arrow-up.png';
-import classNames from 'classnames';
+import arrowDownIcon from '../../resources/arrow-down.png';
+import arrowUpIcon from '../../resources/arrow-up.png';
+import DataCell from './DataCell';
+import { createUseStyles } from 'react-jss';
 
-const DataCell = ({
-  column,
-  content,
-  imgAltText = null,
-  imgSource = null,
-  isHeader,
-  onClick,
-}) => (
-  <span
-    className={classNames('Cell', {
-      HeaderCell: isHeader,
-      'Cell-Numeric': column.isNumeric,
-    })}
-    onClick={onClick}
-  >
-    {content}{' '}
-    {imgSource && imgAltText && (
-      <img className="Cell-Icon" alt={imgAltText} src={imgSource} />
-    )}
-  </span>
-);
+const useStyles = createUseStyles({
+  tableRow: ({ isHeader, index }) => ({
+    display: 'flex',
+    width: '100%',
+    minWidth: '500px',
+    position: isHeader ? 'sticky' : '',
+    top: '0px',
+    backgroundColor: index % 2 === 1 ? '#EEEEEE' : '#FFFFFF',
+  }),
+});
 
 const HeaderRow = ({
   columns,
@@ -32,6 +22,7 @@ const HeaderRow = ({
   sortedAscending,
   sortedColumn,
 }) => {
+  const classes = useStyles({ isHeader: true, index: 0 });
   const sortedIndicatorImageSource = sortedAscending
     ? arrowUpIcon
     : arrowDownIcon;
@@ -39,7 +30,7 @@ const HeaderRow = ({
     ? 'Sorted ascending'
     : 'Sorted descending';
   return (
-    <div className="TableRow">
+    <div className={classes.tableRow}>
       {columns.map((column, i) => (
         <DataCell
           column={column}
@@ -57,13 +48,16 @@ const HeaderRow = ({
   );
 };
 
-const DataRow = ({ row, columns }) => (
-  <div className="TableRow">
-    {columns.map((column, i) => (
-      <DataCell key={i} column={column} content={column.rowToValue(row)} />
-    ))}
-  </div>
-);
+const DataRow = ({ index, row, columns }) => {
+  const classes = useStyles({ isHeader: false, index });
+  return (
+    <div className={classes.tableRow}>
+      {columns.map((column, i) => (
+        <DataCell key={i} column={column} content={column.rowToValue(row)} />
+      ))}
+    </div>
+  );
+};
 
 DataRow.propTypes = {
   row: PropTypes.object.isRequired,
@@ -84,7 +78,7 @@ const DataTable = ({
       sortedAscending={sortedAscending}
     />
     {rows.map((row, i) => (
-      <DataRow key={i} row={row} columns={columns} />
+      <DataRow key={i} index={i} row={row} columns={columns} />
     ))}
   </div>
 );

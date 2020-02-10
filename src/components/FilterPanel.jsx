@@ -3,18 +3,46 @@ import PropTypes from 'prop-types';
 import { FILTER_TYPE } from '../util/Filters';
 import debounce from 'lodash.debounce';
 import FilterHistogram from './histogram/FilterHistogram';
+import { createUseStyles } from 'react-jss';
+
+const useStyles = createUseStyles({
+  panelContainer: {
+    backgroundColor: 'moccasin',
+    padding: '20px',
+    marginBottom: '20px',
+  },
+
+  itemContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    minHeight: '30px',
+  },
+
+  smallHorizontalPadding: {
+    paddingLeft: '5px',
+    paddingRight: '5px',
+  },
+
+  verticallyCenteredWithPadding: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    paddingLeft: '5px',
+    paddingRight: '5px',
+  },
+});
 
 const StyledInput = ({
   labelText,
   showLabelTextAfterChildren = false,
   children,
 }) => {
+  const classes = useStyles();
   return (
-    <label className="FilterItemContainer">
+    <label className={classes.itemContainer}>
       {!showLabelTextAfterChildren && labelText}
-      <div className="SmallHorizontalPadding VerticallyCenteredSingleItem">
-        {children}
-      </div>
+      <div className={classes.verticallyCenteredWithPadding}>{children}</div>
       {showLabelTextAfterChildren && labelText}
     </label>
   );
@@ -108,6 +136,25 @@ const Filter = ({ filter, histogramData, onFilterChanged }) => {
   }
 };
 
+const FilterPanelContainer = ({ filters, histograms, onFilterChanged }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.panelContainer}>
+      <form>
+        {Object.values(filters).map(filter => (
+          <div key={filter.column.key}>
+            <Filter
+              filter={filter}
+              histogramData={histograms[filter.column.key]}
+              onFilterChanged={onFilterChanged}
+            />
+          </div>
+        ))}
+      </form>
+    </div>
+  );
+};
+
 /**
  * This is a fully uncontrolled component
  * (see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key)
@@ -141,19 +188,11 @@ export class FilterPanel extends Component {
     const { histograms } = this.props;
 
     return (
-      <div className="FilterPanelContainer">
-        <form>
-          {Object.values(filters).map(filter => (
-            <div key={filter.column.key}>
-              <Filter
-                filter={filter}
-                histogramData={histograms[filter.column.key]}
-                onFilterChanged={this.onFilterChanged}
-              />
-            </div>
-          ))}
-        </form>
-      </div>
+      <FilterPanelContainer
+        filters={filters}
+        histograms={histograms}
+        onFilterChanged={this.onFilterChanged}
+      />
     );
   }
 }

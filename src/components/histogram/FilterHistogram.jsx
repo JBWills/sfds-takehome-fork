@@ -6,14 +6,37 @@ import BarContainer from './BarContainer';
 import { bound } from '../../util/numberUtils';
 import SliderKnob from './SliderKnob';
 import FilterOverlays from './FilterOverlays';
+import {
+  LARGE_BREAKPOINT,
+  MEDIUM_BREAKPOINT,
+  SMALL_BREAKPOINT,
+} from '../../util/jssConstants';
 
 const MAX_KNOB_CLOSENESS = 15;
 
 const useStyles = createUseStyles({
   mainContainer: {
-    height: 100,
+    height: 50,
     backgroundColor: '#FFFFFF',
     position: 'relative',
+  },
+
+  [SMALL_BREAKPOINT]: {
+    mainContainer: {
+      width: '100%',
+    },
+  },
+
+  [MEDIUM_BREAKPOINT]: {
+    mainContainer: {
+      width: '50%',
+    },
+  },
+
+  [LARGE_BREAKPOINT]: {
+    mainContainer: {
+      width: '50%',
+    },
   },
 });
 
